@@ -3,12 +3,14 @@
 echo " > creating clean directories"
 rm -r classes
 mkdir classes
-rm -r jars
-mkdir jars
+rm -r mods
+mkdir mods
 
 echo " > compiling and packaging Advent"
 mkdir classes/org.codefx.demo.advent
-javac -d classes/org.codefx.demo.advent \
+$JIGSAW_BIN/javac \
+	-d classes/org.codefx.demo.advent \
+	src/org.codefx.demo.advent/module-info.java \
 	src/org.codefx.demo.advent/org/codefx/demo/advent/Surprise.java \
 	src/org.codefx.demo.advent/org/codefx/demo/advent/SurpriseFactory.java \
 	src/org.codefx.demo.advent/org/codefx/demo/advent/surprises/AbstractSurpriseFactory.java \
@@ -17,9 +19,13 @@ javac -d classes/org.codefx.demo.advent \
 	src/org.codefx.demo.advent/org/codefx/demo/advent/Calendar.java \
 	src/org.codefx.demo.advent/org/codefx/demo/advent/CalendarSheet.java \
 	src/org.codefx.demo.advent/org/codefx/demo/advent/Main.java
-jar -cfm jars/org.codefx.demo.advent.jar \
-	src/org.codefx.demo.advent/manifest.mf \
+$JIGSAW_BIN/jar \
+	-c \
+	--file mods/org.codefx.demo.advent.jar \
+	--main-class=org.codefx.demo.advent.Main \
 	-C classes/org.codefx.demo.advent/ .
 
 echo " > running Advent"
-java -jar jars/org.codefx.demo.advent.jar
+$JIGSAW_BIN/java \
+	-mp mods \
+	-m org.codefx.demo.advent
