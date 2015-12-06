@@ -1,7 +1,9 @@
 package org.codefx.demo.advent;
 
-import org.codefx.demo.advent.surprises.ChocolateFactory;
-import org.codefx.demo.advent.surprises.QuoteFactory;
+import org.codefx.demo.advent.calendar.Calendar;
+import org.codefx.demo.advent.factories.ChocolateFactory;
+import org.codefx.demo.advent.factories.QuoteFactory;
+import org.codefx.demo.advent.surprise.SurpriseFactory;
 
 import java.util.Arrays;
 import java.util.List;

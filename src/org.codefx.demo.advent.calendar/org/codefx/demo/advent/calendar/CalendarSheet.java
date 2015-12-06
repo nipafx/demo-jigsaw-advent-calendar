@@ -1,4 +1,6 @@
-package org.codefx.demo.advent;
+package org.codefx.demo.advent.calendar;
+
+import org.codefx.demo.advent.surprise.Surprise;
 
 import static java.lang.String.format;
 

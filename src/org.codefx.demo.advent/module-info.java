@@ -1,3 +1,6 @@
 module org.codefx.demo.advent {
-	// no imports or exports
+	// list the required modules
+	requires org.codefx.demo.advent.calendar;
+	requires org.codefx.demo.advent.factories;
+	// exports no functionality
 }

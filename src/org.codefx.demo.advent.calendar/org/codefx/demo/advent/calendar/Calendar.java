@@ -1,4 +1,7 @@
-package org.codefx.demo.advent;
+package org.codefx.demo.advent.calendar;
+
+import org.codefx.demo.advent.surprise.Surprise;
+import org.codefx.demo.advent.surprise.SurpriseFactory;
 
 import java.util.List;
 import java.util.Random;
