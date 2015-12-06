@@ -1,39 +1,152 @@
 > :arrow_upper_right: This README only covers one section of the demo.
 > The [master branch](https://github.com/CodeFX-org/demo-jigsaw-advent-calendar/tree/master) contains more information.
 
-# :one: Creating A Module
+# :two: Splitting Into Modules
 
-The next step is small but important.
-It changes nothing about the code or its organization but moves it into a Jigsaw module.
+Now it's time to really get to know Jigsaw and split that monolith up into separate modules.
 
-To be able to create a module, the project needs a `module-info.java`:
+## Rationale
+
+The "surprise API", i.e. `Surprise` and `SurpriseFactory`, is a great success and we want to separate it from the monolith.
+
+Then there are the factories that create the surprises, which turn out to be very dynamic.
+A lot of work is being done here, they change frequently and which factories are used changes from release to release.
+So we want to isolate them.
+
+At the same time we plan to create a large Christmas application of which the calendar is only one part. So we'd like to have a separate module for that as well.
+
+We end up with these modules:
+
+* _surprise_ - `Surprise` and `SurpriseFactory`
+* _calendar_ - the calendar, which uses the surprise API
+* _factories_ - the `SurpriseFactory` implementations
+* _advent_ - the original application, now hollowed out to the `Main` class
+
+Looking at their dependencies we see that _surprise_ depends on no other module of ours.
+Both _calendar_ and _factories_ make use of its types so they must depend on it.
+Finally, _main_ uses the factories to create the calendar so it depends on both.
+
+<img src="http://yuml.me/cd7e6a17.png"></img>
+<!-- // http://yuml.me/edit/cd7e6a17
+[surprise{bg:green}]
+[factories{bg:yellow}]->[surprise]
+[calendar{bg:yellow}]->[surprise]
+[main{bg:red}]->[factories]
+[main]->[calendar]
+-->
+
+## Implementation
+
+### _surprises_
+
+Let's start with _surprise_.
+
+There are no `required` clauses as it has no dependencies.
+(Except for `java.base`, which is always implicitly required.)
+It exports the package `org.codefx.demo.advent.surprise` because that contains the two classes `Surprise` and `SurpriseFactory`.
+
+So the `module-info.java` looks as follows:
 
 ```java
-module org.codefx.demo.advent {
-	// no imports or exports
+module org.codefx.demo.advent.surprise {
+	// requires no other modules
+	// publicly accessible packages
+	exports org.codefx.demo.advent.surprise;
 }
 ```
 
-Its name (here `org.codefx.demo.advent`) can be arbitrary but to ensure uniqueness it is recommended to stick to the inverse URL naming schema of packages.
-So while this is not necessary it will often mean that the module name is a prefix of the packages it contains.
-
-The biggest change is the script<sup>1</sup> to compile and run:
+Compiling and packaging is very similar to the previous section.
+It is in fact even easier because _surprises_ contains no main class:
 
 ```bash
-# compile (add module-info.java):
-javac -d classes/org.codefx.demo.advent ${list of source files}
-# package (add module-info.class and specify main class):
-jar -c --file=mods/org.codefx.demo.advent.jar \
-	--main-class=org.codefx.demo.advent.Main \
-	${compiled class files}
-# run (specify a module path and simply name to module to run):
-java -mp mods -m org.codefx.demo.advent
+# compile
+javac -d classes/org.codefx.demo.advent.surprise ${list of source files}
+# package
+jar -c --file=mods/org.codefx.demo.advent.surprise.jar ${compiled class files}
 ```
 
-To create a "modular jar" we only need to include a `module-info.class` in the list of files for `jar`.
-We can also specify the main class to run when the module is executed.
-To run the module we provide a module path to `java` (via `-mp`) that points to the directory containing all our modules (just one at the moment).
-For execution it suffices to name the module as the JVM will look for it in the module path and find out that a main class was defined.
+### _calendar_
 
-<sup>1</sup> the commands must come from the JDK 9 `bin` directory;
-`compileAndRun.sh` prefixes them with `JIGSAW_BIN` to achieve this
+The calendar has fields and parameters with types from the surprise API so the module must depend on _surprises_.
+Adding `requires org.codefx.demo.advent.surprise` to the module achieves this.
+
+But there is an additional twist:
+The publicly accessible method `Calendar::createWithSurprises` declares a parameter of type `List<SurpriseFactory>`.
+So all modules using this API must also read _surprises_.
+Otherwise Jigsaw would prevent them from accessing these types, which would lead to compile and runtime errors.
+Marking the `requires` clause as `public` fixes this.
+With it any module that depends on _calendar_ can also access _surprises_ (called _implied readability_).
+
+This module's API consists of the class `Calendar`.
+For it to be publicly accessible the containing package `org.codefx.demo.advent.calendar` must be exported.
+Note that `CalendarSheet`, private to the same package, will not be visible outside the module.
+This is analog to before where a package-private class from another package was also not visible.
+
+The final module-info looks as follows:
+
+```java
+module org.codefx.demo.advent.calendar {
+	// required modules
+	requires public org.codefx.demo.advent.surprise;
+	// publicly accessible packages
+	exports org.codefx.demo.advent.calendar;
+}
+```
+
+Compilation is almost like before but the dependency on _surprises_ must of course be reflected here.
+For that it suffices to point the compiler to the directory `mods` as it contains the required module (the sum of such directories is called the _module path_):
+
+```bash
+# compile
+javac -mp mods -d classes/org.codefx.demo.advent.calendar ${list of source files}
+# package
+jar -c --file=mods/org.codefx.demo.advent.calendar.jar ${compiled class files}
+```
+
+### _factories_
+
+The factories implement `SurpriseFactory` so this module must obviously depend on theirs.
+And since they return instances of `Surprise` from published methods the same line of though as above leads to a `requires public` clause.
+
+The factories can be found in the package `org.codefx.demo.advent.factories` so that must be exported.
+Note that the public class `AbstractSurpriseFactory`, which is found in another package, is **not** accessible outside this module.
+As it is currently implemented Jigsaw will also not allow reflection to access it.
+The only way around this are command line flags.
+
+Together:
+
+```java
+module org.codefx.demo.advent.factories {
+	// required modules
+	requires public org.codefx.demo.advent.surprise;
+	// publicly accessible packages
+	exports org.codefx.demo.advent.factories;
+}
+```
+
+Compilation and packaging is analog to _calendar_.
+
+### _main_
+
+Our application requires the two modules _calendar_ and _factories_ to compile and run.
+It has no API to export.
+
+```java
+module org.codefx.demo.advent {
+	// required modules
+	requires org.codefx.demo.advent.calendar;
+	requires org.codefx.demo.advent.factories;
+	// no exports
+}
+```
+
+Compiling and packaging is like with last section's single module except that the compiler needs to know where to look for required modules:
+
+```bash
+javac -mp mods -d classes/org.codefx.demo.advent ${list of source files}
+jar -c \
+	--file=mods/org.codefx.demo.advent.jar \
+	--main-class=org.codefx.demo.advent.Main \
+	${compiled class files}
+java -mp mods -m org.codefx.demo.advent
+```
