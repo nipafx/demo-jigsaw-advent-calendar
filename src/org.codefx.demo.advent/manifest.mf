@@ -1,2 +1,0 @@
-Manifest-version: 1.0
-Main-Class: org.codefx.demo.advent.Main
