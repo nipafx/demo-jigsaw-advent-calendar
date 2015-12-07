@@ -37,6 +37,30 @@ Finally, _main_ uses the factories to create the calendar so it depends on both.
 
 ## Implementation
 
+The first step is to reorganize the source code:
+
+```
+src
+  - org.codefx.demo.advent.calendar: the "calendar" module
+      - org ...
+      module-info.java
+  - org.codefx.demo.advent.factories: the "factories" module
+      - org ...
+      module-info.java
+  - org.codefx.demo.advent.surprise: the "surprise" module
+      - org ...
+      module-info.java
+  - org.codefx.demo.advent: the "main" module
+      - org ...
+      module-info.java
+.gitignore
+compileAndRun.sh
+LICENSE
+README
+```
+
+This is the same directory structure as used by the [official quick start guide](http://openjdk.java.net/projects/jigsaw/quick-start). The depcition is not complete, though, and does not contain the folders below `org`, which are the individual packages and eventually the source files.
+
 ### _surprises_
 
 Let's start with _surprise_.
