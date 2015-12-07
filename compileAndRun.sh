@@ -31,19 +31,31 @@ $JIGSAW_BIN/jar \
 	--file mods/org.codefx.demo.advent.calendar.jar \
 	-C classes/org.codefx.demo.advent.calendar/ .
 
-echo " > compiling and packaging Factories"
-mkdir classes/org.codefx.demo.advent.factories
+echo " > compiling and packaging ChocolateFactory"
+mkdir classes/org.codefx.demo.advent.factory.chocolate
 $JIGSAW_BIN/javac \
 	-mp mods \
-	-d classes/org.codefx.demo.advent.factories \
-	src/org.codefx.demo.advent.factories/module-info.java \
-	src/org.codefx.demo.advent.factories/org/codefx/demo/advent/factories/impl/AbstractSurpriseFactory.java \
-	src/org.codefx.demo.advent.factories/org/codefx/demo/advent/factories/ChocolateFactory.java \
-	src/org.codefx.demo.advent.factories/org/codefx/demo/advent/factories/QuoteFactory.java
+	-d classes/org.codefx.demo.advent.factory.chocolate \
+	src/org.codefx.demo.advent.factory.chocolate/module-info.java \
+	src/org.codefx.demo.advent.factory.chocolate/org/codefx/demo/advent/factory/chocolate/AbstractSurpriseFactory.java \
+	src/org.codefx.demo.advent.factory.chocolate/org/codefx/demo/advent/factory/chocolate/ChocolateFactory.java
 $JIGSAW_BIN/jar \
 	-c \
-	--file mods/org.codefx.demo.advent.factories.jar \
-	-C classes/org.codefx.demo.advent.factories/ .
+	--file mods/org.codefx.demo.advent.factory.chocolate.jar \
+	-C classes/org.codefx.demo.advent.factory.chocolate/ .
+
+echo " > compiling and packaging QuoteFactory"
+mkdir classes/org.codefx.demo.advent.factory.quote
+$JIGSAW_BIN/javac \
+	-mp mods \
+	-d classes/org.codefx.demo.advent.factory.quote \
+	src/org.codefx.demo.advent.factory.quote/module-info.java \
+	src/org.codefx.demo.advent.factory.quote/org/codefx/demo/advent/factory/quote/AbstractSurpriseFactory.java \
+	src/org.codefx.demo.advent.factory.quote/org/codefx/demo/advent/factory/quote/QuoteFactory.java
+$JIGSAW_BIN/jar \
+	-c \
+	--file mods/org.codefx.demo.advent.factory.quote.jar \
+	-C classes/org.codefx.demo.advent.factory.quote/ .
 
 echo " > compiling and packaging Advent"
 mkdir classes/org.codefx.demo.advent
