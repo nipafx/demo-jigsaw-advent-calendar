@@ -27,6 +27,13 @@ To this end it requires a `List<SurpriseFactory>`.
 The demo consists of several sections, each building on the previous ones.
 There is a branch for each section.
 
+* :zero: [Before Jigsaw](https://github.com/CodeFX-org/demo-jigsaw-advent-calendar/tree/00-before-jigsaw):
+describes the application's organization before Jigsaw
+* :one: [Creating A Module](https://github.com/CodeFX-org/demo-jigsaw-advent-calendar/tree/01-creating-a-module):
+moves the application into Jigsaw land by moving it into a single module
+* :two: [Splitting Into Modules](https://github.com/CodeFX-org/demo-jigsaw-advent-calendar/tree/02-splitting-into-modules):
+explores more of Jigsaw's core features by splitting the application into several modules
+
 
 
 ## Setup
