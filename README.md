@@ -33,6 +33,8 @@ describes the application's organization before Jigsaw
 moves the application into Jigsaw land by moving it into a single module
 * :two: [Splitting Into Modules](https://github.com/CodeFX-org/demo-jigsaw-advent-calendar/tree/02-splitting-into-modules):
 explores more of Jigsaw's core features by splitting the application into several modules
+* :three: [Services](https://github.com/CodeFX-org/demo-jigsaw-advent-calendar/tree/03-services):
+Introducing services and the `ServiceLocator` for loose coupling between modules.
 
 
 
