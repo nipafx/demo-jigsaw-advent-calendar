@@ -1,176 +1,116 @@
 > :arrow_upper_right: This README only covers one section of the demo.
 > The [master branch](https://github.com/CodeFX-org/demo-jigsaw-advent-calendar/tree/master) contains more information.
 
-# :two: Splitting Into Modules
+# :three: Services
 
-Now it's time to really get to know Jigsaw and split that monolith up into separate modules.
+Jigsaw enables loose coupling by implementing the service locator pattern, where the module system itself acts as the locator.
 
 ## Rationale
 
-The "surprise API", i.e. `Surprise` and `SurpriseFactory`, is a great success and we want to separate it from the monolith.
+Somebody who recently read a blog post about how cool loose coupling is looked at our code from [the previous section](https://github.com/CodeFX-org/demo-jigsaw-advent-calendar/tree/02-splitting-into-modules) and complained about the tight relationship between _main_ and _factories_.
+To be more precise she critized that _main_ even knows _factories_.
+And just because it has to instantiate some implementations of a perfectly fine abstraction (the `SurpriseFactory`)!
 
-Then there are the factories that create the surprises, which turn out to be very dynamic.
-A lot of work is being done here, they change frequently and which factories are used changes from release to release.
-So we want to isolate them.
+Having a man in the middle providing us with these implementing instances would remove the direct dependency.
+Even better, if said middleman would be able to find all implementations on the module path, the calendar's surprises could easily be configured by adding or removing modules before launching.
 
-At the same time we plan to create a large Christmas application of which the calendar is only one part. So we'd like to have a separate module for that as well.
+This is indeed possible with Jigsaw.
+We can have a module specify that it provides implementations of an interface.
+Another module can express that it uses said interface and find all implementations with the [`ServiceLocator`] (for details see [_main_](#main) below).
 
-We end up with these modules:
+We use this opportunity to split _factories_ into _chocolate_ and _quote_ and end up with these modules and dependencies:
 
 * _surprise_ - `Surprise` and `SurpriseFactory`
 * _calendar_ - the calendar, which uses the surprise API
-* _factories_ - the `SurpriseFactory` implementations
-* _advent_ - the original application, now hollowed out to the `Main` class
+* _chocolate_ - the `ChocolateFactory` as a service
+* _quote_ - the `QuoteFactory`  as a service
+* _main_ - the application; no longer requires individual factories
 
-Looking at their dependencies we see that _surprise_ depends on no other module of ours.
-Both _calendar_ and _factories_ make use of its types so they must depend on it.
-Finally, _main_ uses the factories to create the calendar so it depends on both.
-
-<img src="http://yuml.me/cd7e6a17.png"></img>
-<!-- // http://yuml.me/edit/cd7e6a17
+<img src="http://yuml.me/b392c5b0.png"></img>
+<!-- // http://yuml.me/edit/b392c5b0
 [surprise{bg:green}]
-[factories{bg:yellow}]->[surprise]
+[note:SurpriseFactory{bg:limegreen}]<exposes-[surprise]
+[chocolate{bg:blue}]-<>[note:SurpriseFactory]
+[quote{bg:blue}]-<>[note:SurpriseFactory]
 [calendar{bg:yellow}]->[surprise]
-[main{bg:red}]->[factories]
+[main{bg:red}]-uses>[note:SurpriseFactory]
 [main]->[calendar]
 -->
 
 ## Implementation
 
-The first step is to reorganize the source code:
+The first step is to reorganize the source code.
+The only change [from before](https://github.com/CodeFX-org/demo-jigsaw-advent-calendar/tree/02-splitting-into-modules#implementation) is that `src/org.codefx.demo.advent.factories` is replaced by `src/org.codefx.demo.advent.factory.chocolate` and `src/org.codefx.demo.advent.factory.quote`.
 
-```
-src
-  - org.codefx.demo.advent.calendar: the "calendar" module
-      - org ...
-      module-info.java
-  - org.codefx.demo.advent.factories: the "factories" module
-      - org ...
-      module-info.java
-  - org.codefx.demo.advent.surprise: the "surprise" module
-      - org ...
-      module-info.java
-  - org.codefx.demo.advent: the "main" module
-      - org ...
-      module-info.java
-.gitignore
-compileAndRun.sh
-LICENSE
-README
-```
+Lets look at the individual modules.
 
-This is the same directory structure as used by the [official quick start guide](http://openjdk.java.net/projects/jigsaw/quick-start). The depcition is not complete, though, and does not contain the folders below `org`, which are the individual packages and eventually the source files.
+### _surprise_
 
-### _surprises_
-
-Let's start with _surprise_.
-
-There are no `required` clauses as it has no dependencies.
-(Except for `java.base`, which is always implicitly required.)
-It exports the package `org.codefx.demo.advent.surprise` because that contains the two classes `Surprise` and `SurpriseFactory`.
-
-So the `module-info.java` looks as follows:
-
-```java
-module org.codefx.demo.advent.surprise {
-	// requires no other modules
-	// publicly accessible packages
-	exports org.codefx.demo.advent.surprise;
-}
-```
-
-Compiling and packaging is very similar to the previous section.
-It is in fact even easier because _surprises_ contains no main class:
-
-```bash
-# compile
-javac -d classes/org.codefx.demo.advent.surprise ${list of source files}
-# package
-jar -c --file=mods/org.codefx.demo.advent.surprise.jar ${compiled class files}
-```
+Nothing changed [from before](https://github.com/CodeFX-org/demo-jigsaw-advent-calendar/tree/02-splitting-into-modules#surprise).
 
 ### _calendar_
 
-The calendar has fields and parameters with types from the surprise API so the module must depend on _surprises_.
-Adding `requires org.codefx.demo.advent.surprise` to the module achieves this.
+[Dito](https://github.com/CodeFX-org/demo-jigsaw-advent-calendar/tree/02-splitting-into-modules#calendar).
 
-But there is an additional twist:
-The publicly accessible method `Calendar::createWithSurprises` declares a parameter of type `List<SurpriseFactory>`.
-So all modules using this API must also read _surprises_.
-Otherwise Jigsaw would prevent them from accessing these types, which would lead to compile and runtime errors.
-Marking the `requires` clause as `public` fixes this.
-With it any module that depends on _calendar_ can also access _surprises_ (called _implied readability_).
+### _chocolate_
 
-This module's API consists of the class `Calendar`.
-For it to be publicly accessible the containing package `org.codefx.demo.advent.calendar` must be exported.
-Note that `CalendarSheet`, private to the same package, will not be visible outside the module.
-This is analog to before where a package-private class from another package was also not visible.
+As [before with _factories_](https://github.com/CodeFX-org/demo-jigsaw-advent-calendar/tree/02-splitting-into-modules#factories) this module must `require public` the _surprise_ module.
 
-The final module-info looks as follows:
+More interesting are its exports.
+It provides an implementation of `SurpriseFactory`, namely `ChocolateFactory`, which is specified as follows:
 
 ```java
-module org.codefx.demo.advent.calendar {
-	// required modules
+provides org.codefx.demo.advent.surprise.SurpriseFactory
+	with org.codefx.demo.advent.factory.chocolate.ChocolateFactory;
+```
+
+Since this class is the entirety of its public API it does not need to export anything else.
+Hence no other export clause is necessary.
+
+We end up with:
+
+```java
+module org.codefx.demo.advent.factory.chocolate {
+	// list the required modules
 	requires public org.codefx.demo.advent.surprise;
-	// publicly accessible packages
-	exports org.codefx.demo.advent.calendar;
+	// specify which class provides which service
+	provides org.codefx.demo.advent.surprise.SurpriseFactory
+		with org.codefx.demo.advent.factory.chocolate.ChocolateFactory;
 }
 ```
 
-Compilation is almost like before but the dependency on _surprises_ must of course be reflected here.
-For that it suffices to point the compiler to the directory `mods` as it contains the required module (the sum of such directories is called the _module path_):
-
-```bash
-# compile
-javac -mp mods -d classes/org.codefx.demo.advent.calendar ${list of source files}
-# package
-jar -c --file=mods/org.codefx.demo.advent.calendar.jar ${compiled class files}
-```
-
-### _factories_
-
-The factories implement `SurpriseFactory` so this module must obviously depend on theirs.
-And since they return instances of `Surprise` from published methods the same line of though as above leads to a `requires public` clause.
-
-The factories can be found in the package `org.codefx.demo.advent.factories` so that must be exported.
-Note that the public class `AbstractSurpriseFactory`, which is found in another package, is **not** accessible outside this module.
-As it is currently implemented Jigsaw will also not allow reflection to access it.
-The only way around this are command line flags.
-
-Together:
+Compilation and packaging is straight forward:
 
 ```java
-module org.codefx.demo.advent.factories {
-	// required modules
-	requires public org.codefx.demo.advent.surprise;
-	// publicly accessible packages
-	exports org.codefx.demo.advent.factories;
-}
+javac -mp mods -d classes/org.codefx.demo.advent.factory.chocolate ${source files}
+jar -c --file mods/org.codefx.demo.advent.factory.chocolate.jar  ${compiled class files}
 ```
 
-Compilation and packaging is analog to _calendar_.
+### _quote_
+
+Analog to _chocolate_.
 
 ### _main_
 
-Our application requires the two modules _calendar_ and _factories_ to compile and run.
+The most interesting part about _main_ is how it uses the `ServiceLocator` to find implementation of `SurpriseFactory`.
+From [its `main` method](https://github.com/CodeFX-org/demo-jigsaw-advent-calendar/blob/03-services/src/org.codefx.demo.advent/org/codefx/demo/advent/Main.java#L13-L14):
+
+```java
+List<SurpriseFactory> surpriseFactories = new ArrayList<>();
+ServiceLoader.load(SurpriseFactory.class).forEach(surpriseFactories::add);
+```
+
+Our application now only requires _calendar_ but must specifiy that it uses `SurpriseFactory`.
 It has no API to export.
 
 ```java
 module org.codefx.demo.advent {
-	// required modules
+	// list the required modules
 	requires org.codefx.demo.advent.calendar;
-	requires org.codefx.demo.advent.factories;
-	// no exports
+	// list the used services
+	uses org.codefx.demo.advent.surprise.SurpriseFactory;
+	// exports no functionality
 }
 ```
 
-Compiling and packaging is like with last section's single module except that the compiler needs to know where to look for required modules:
-
-```bash
-javac -mp mods -d classes/org.codefx.demo.advent ${list of source files}
-jar -c \
-	--file=mods/org.codefx.demo.advent.jar \
-	--main-class=org.codefx.demo.advent.Main \
-	${compiled class files}
-java -mp mods -m org.codefx.demo.advent
-```
+Compilation and execution are [like before](https://github.com/CodeFX-org/demo-jigsaw-advent-calendar/tree/02-splitting-into-modules#main).
