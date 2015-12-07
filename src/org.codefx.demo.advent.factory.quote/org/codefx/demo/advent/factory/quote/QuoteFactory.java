@@ -1,6 +1,5 @@
-package org.codefx.demo.advent.factories;
+package org.codefx.demo.advent.factory.quote;
 
-import org.codefx.demo.advent.factories.impl.AbstractSurpriseFactory;
 import org.codefx.demo.advent.surprise.Surprise;
 
 import java.util.Arrays;

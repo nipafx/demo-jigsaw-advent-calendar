@@ -1,4 +1,4 @@
-package org.codefx.demo.advent.factories.impl;
+package org.codefx.demo.advent.factory.chocolate;
 
 import org.codefx.demo.advent.surprise.Surprise;
 import org.codefx.demo.advent.surprise.SurpriseFactory;
