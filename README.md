@@ -20,7 +20,7 @@ We end up with these modules:
 * _surprise_ - `Surprise` and `SurpriseFactory`
 * _calendar_ - the calendar, which uses the surprise API
 * _factories_ - the `SurpriseFactory` implementations
-* _advent_ - the original application, now hollowed out to the `Main` class
+* _main_ - the original application, now hollowed out to the `Main` class
 
 Looking at their dependencies we see that _surprise_ depends on no other module of ours.
 Both _calendar_ and _factories_ make use of its types so they must depend on it.
@@ -61,7 +61,7 @@ README
 
 This is the same directory structure as used by the [official quick start guide](http://openjdk.java.net/projects/jigsaw/quick-start). The depcition is not complete, though, and does not contain the folders below `org`, which are the individual packages and eventually the source files.
 
-### _surprises_
+### _surprise_
 
 Let's start with _surprise_.
 
@@ -80,7 +80,7 @@ module org.codefx.demo.advent.surprise {
 ```
 
 Compiling and packaging is very similar to the previous section.
-It is in fact even easier because _surprises_ contains no main class:
+It is in fact even easier because _surprise_ contains no main class:
 
 ```bash
 # compile
@@ -91,15 +91,15 @@ jar -c --file=mods/org.codefx.demo.advent.surprise.jar ${compiled class files}
 
 ### _calendar_
 
-The calendar has fields and parameters with types from the surprise API so the module must depend on _surprises_.
+The calendar has fields and parameters with types from the surprise API so the module must depend on _surprise_.
 Adding `requires org.codefx.demo.advent.surprise` to the module achieves this.
 
 But there is an additional twist:
 The publicly accessible method `Calendar::createWithSurprises` declares a parameter of type `List<SurpriseFactory>`.
-So all modules using this API must also read _surprises_.
+So all modules using this API must also read _surprise_.
 Otherwise Jigsaw would prevent them from accessing these types, which would lead to compile and runtime errors.
 Marking the `requires` clause as `public` fixes this.
-With it any module that depends on _calendar_ can also access _surprises_ (called _implied readability_).
+With it any module that depends on _calendar_ can also access _surprise_ (called _implied readability_).
 
 This module's API consists of the class `Calendar`.
 For it to be publicly accessible the containing package `org.codefx.demo.advent.calendar` must be exported.
@@ -117,7 +117,7 @@ module org.codefx.demo.advent.calendar {
 }
 ```
 
-Compilation is almost like before but the dependency on _surprises_ must of course be reflected here.
+Compilation is almost like before but the dependency on _surprise_ must of course be reflected here.
 For that it suffices to point the compiler to the directory `mods` as it contains the required module (the sum of such directories is called the _module path_):
 
 ```bash
