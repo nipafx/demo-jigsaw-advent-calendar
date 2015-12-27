@@ -1,6 +1,6 @@
 # Jigsaw Advent Calendar :christmas_tree:
 
-This demo project contains the code for my post for the [Java Advent - The JVM Programming Advent Calendar](http://www.javaadvent.com/).
+This demo project contains the code for [a post for the _Java Advent Calendar_](http://www.javaadvent.com/2015/12/10) (which I published in [on my blog](http://blog.codefx.org/java/dev/jigsaw-hands-on-guide/) as well).
 It showcases a couple of features of [Project Jigsaw](http://blog.codefx.org/tag/project-jigsaw/).
 
 The code is released into the public domain via [CC0](https://creativecommons.org/publicdomain/zero/1.0/) so it can be used without any limitations.
