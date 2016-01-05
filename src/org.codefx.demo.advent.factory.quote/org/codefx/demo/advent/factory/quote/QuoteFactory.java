@@ -1,5 +1,6 @@
 package org.codefx.demo.advent.factory.quote;
 
+import com.google.common.collect.ImmutableList;
 import org.codefx.demo.advent.surprise.Surprise;
 
 import java.util.Arrays;
@@ -9,7 +10,7 @@ import static java.lang.String.format;
 
 public class QuoteFactory extends AbstractSurpriseFactory {
 
-	private static final List<Surprise> QUOTES = Arrays.asList(
+	private static final ImmutableList<Surprise> QUOTES = ImmutableList.of(
 			new Quote(
 					"The sky above the port was the color of television, tuned to a dead channel.",
 					"William Gibson"),

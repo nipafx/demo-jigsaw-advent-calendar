@@ -47,7 +47,7 @@ $JIGSAW_BIN/jar \
 echo " > compiling and packaging QuoteFactory"
 mkdir classes/org.codefx.demo.advent.factory.quote
 $JIGSAW_BIN/javac \
-	-mp mods \
+	-mp mods:libs \
 	-d classes/org.codefx.demo.advent.factory.quote \
 	src/org.codefx.demo.advent.factory.quote/module-info.java \
 	src/org.codefx.demo.advent.factory.quote/org/codefx/demo/advent/factory/quote/AbstractSurpriseFactory.java \
@@ -71,4 +71,4 @@ $JIGSAW_BIN/jar \
 	-C classes/org.codefx.demo.advent/ .
 
 echo " > running Advent"
-$JIGSAW_BIN/java -mp mods -m org.codefx.demo.advent
+$JIGSAW_BIN/java -mp mods:libs -m org.codefx.demo.advent
