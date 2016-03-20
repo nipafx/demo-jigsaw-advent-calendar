@@ -3,4 +3,5 @@ module org.codefx.demo.advent.factories {
 	requires public org.codefx.demo.advent.surprise;
 	// list the packages that will be publicly accessible
 	exports org.codefx.demo.advent.factories;
+	exports org.codefx.demo.advent.split;
 }
