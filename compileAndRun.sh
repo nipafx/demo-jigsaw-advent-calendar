@@ -25,7 +25,8 @@ $JIGSAW_BIN/javac \
 	-d classes/org.codefx.demo.advent.calendar \
 	src/org.codefx.demo.advent.calendar/module-info.java \
 	src/org.codefx.demo.advent.calendar/org/codefx/demo/advent/calendar/Calendar.java \
-	src/org.codefx.demo.advent.calendar/org/codefx/demo/advent/calendar/CalendarSheet.java
+	src/org.codefx.demo.advent.calendar/org/codefx/demo/advent/calendar/CalendarSheet.java \
+	src/org.codefx.demo.advent.calendar/org/codefx/demo/advent/split/SomeClass.java
 $JIGSAW_BIN/jar \
 	-c \
 	--file mods/org.codefx.demo.advent.calendar.jar \
@@ -39,7 +40,8 @@ $JIGSAW_BIN/javac \
 	src/org.codefx.demo.advent.factories/module-info.java \
 	src/org.codefx.demo.advent.factories/org/codefx/demo/advent/factories/impl/AbstractSurpriseFactory.java \
 	src/org.codefx.demo.advent.factories/org/codefx/demo/advent/factories/ChocolateFactory.java \
-	src/org.codefx.demo.advent.factories/org/codefx/demo/advent/factories/QuoteFactory.java
+	src/org.codefx.demo.advent.factories/org/codefx/demo/advent/factories/QuoteFactory.java \
+	src/org.codefx.demo.advent.factories/org/codefx/demo/advent/split/OtherClass.java
 $JIGSAW_BIN/jar \
 	-c \
 	--file mods/org.codefx.demo.advent.factories.jar \
