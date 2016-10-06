@@ -27,5 +27,5 @@ $JIGSAW_BIN/jar \
 
 echo " > running Advent"
 $JIGSAW_BIN/java \
-	-mp mods \
+	-p mods \
 	-m org.codefx.demo.advent

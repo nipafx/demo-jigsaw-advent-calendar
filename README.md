@@ -27,12 +27,12 @@ jar -c --file=mods/org.codefx.demo.advent.jar \
 	--main-class=org.codefx.demo.advent.Main \
 	${compiled class files}
 # run (specify a module path and simply name to module to run):
-java -mp mods -m org.codefx.demo.advent
+java -p mods -m org.codefx.demo.advent
 ```
 
 To create a "modular jar" we only need to include a `module-info.class` in the list of files for `jar`.
 We can also specify the main class to run when the module is executed.
-To run the module we provide a module path to `java` (via `-mp`) that points to the directory containing all our modules (just one at the moment).
+To run the module we provide a module path to `java` (via `-p`) that points to the directory containing all our modules (just one at the moment).
 For execution it suffices to name the module as the JVM will look for it in the module path and find out that a main class was defined.
 
 <sup>1</sup> the commands must come from the JDK 9 `bin` directory;
