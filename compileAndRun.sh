@@ -70,5 +70,7 @@ $JIGSAW_BIN/jar \
 	--main-class org.codefx.demo.advent.Main \
 	-C classes/org.codefx.demo.advent/ .
 
-echo " > running Advent"
-$JIGSAW_BIN/java -p mods -m org.codefx.demo.advent
+echo " > running Advent by specifying additional modules"
+$JIGSAW_BIN/java \
+	--add-modules org.codefx.demo.advent.factory.chocolate,org.codefx.demo.advent.factory.quote \
+	-p mods -m org.codefx.demo.advent
