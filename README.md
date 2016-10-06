@@ -82,7 +82,7 @@ module org.codefx.demo.advent.factory.chocolate {
 Compilation and packaging is straight forward:
 
 ```java
-javac -mp mods -d classes/org.codefx.demo.advent.factory.chocolate ${source files}
+javac -p mods -d classes/org.codefx.demo.advent.factory.chocolate ${source files}
 jar -c --file mods/org.codefx.demo.advent.factory.chocolate.jar  ${compiled class files}
 ```
 
