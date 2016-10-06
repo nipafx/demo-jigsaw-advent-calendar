@@ -122,7 +122,7 @@ For that it suffices to point the compiler to the directory `mods` as it contain
 
 ```bash
 # compile
-javac -mp mods -d classes/org.codefx.demo.advent.calendar ${list of source files}
+javac -p mods -d classes/org.codefx.demo.advent.calendar ${list of source files}
 # package
 jar -c --file=mods/org.codefx.demo.advent.calendar.jar ${compiled class files}
 ```
@@ -167,10 +167,10 @@ module org.codefx.demo.advent {
 Compiling and packaging is like with last section's single module except that the compiler needs to know where to look for required modules:
 
 ```bash
-javac -mp mods -d classes/org.codefx.demo.advent ${list of source files}
+javac -p mods -d classes/org.codefx.demo.advent ${list of source files}
 jar -c \
 	--file=mods/org.codefx.demo.advent.jar \
 	--main-class=org.codefx.demo.advent.Main \
 	${compiled class files}
-java -mp mods -m org.codefx.demo.advent
+java -p mods -m org.codefx.demo.advent
 ```
