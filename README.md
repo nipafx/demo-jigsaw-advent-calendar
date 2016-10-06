@@ -40,7 +40,7 @@ Introducing services and the `ServiceLocator` for loose coupling between modules
 
 ## Setup
 
-This demo was developed againt build 94 of the [Jigsaw early access prototype](https://jdk9.java.net/jigsaw/).
+This demo was developed against build 138 of the [Jigsaw early access prototype](https://jdk9.java.net/jigsaw/).
 For it to work the environment variable `JIGSAW_BIN` has to point to the `bin` directory in such a Java 9 install, e.g.:
 
 ```
