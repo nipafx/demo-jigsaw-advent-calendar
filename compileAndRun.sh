@@ -21,7 +21,7 @@ $JIGSAW_BIN/jar \
 echo " > compiling and packaging Calendar"
 mkdir classes/org.codefx.demo.advent.calendar
 $JIGSAW_BIN/javac \
-	-mp mods \
+	-p mods \
 	-d classes/org.codefx.demo.advent.calendar \
 	src/org.codefx.demo.advent.calendar/module-info.java \
 	src/org.codefx.demo.advent.calendar/org/codefx/demo/advent/calendar/Calendar.java \
@@ -34,7 +34,7 @@ $JIGSAW_BIN/jar \
 echo " > compiling and packaging ChocolateFactory"
 mkdir classes/org.codefx.demo.advent.factory.chocolate
 $JIGSAW_BIN/javac \
-	-mp mods \
+	-p mods \
 	-d classes/org.codefx.demo.advent.factory.chocolate \
 	src/org.codefx.demo.advent.factory.chocolate/module-info.java \
 	src/org.codefx.demo.advent.factory.chocolate/org/codefx/demo/advent/factory/chocolate/AbstractSurpriseFactory.java \
@@ -47,7 +47,7 @@ $JIGSAW_BIN/jar \
 echo " > compiling and packaging QuoteFactory"
 mkdir classes/org.codefx.demo.advent.factory.quote
 $JIGSAW_BIN/javac \
-	-mp mods:libs \
+	-p mods:libs \
 	-d classes/org.codefx.demo.advent.factory.quote \
 	src/org.codefx.demo.advent.factory.quote/module-info.java \
 	src/org.codefx.demo.advent.factory.quote/org/codefx/demo/advent/factory/quote/AbstractSurpriseFactory.java \
@@ -60,7 +60,7 @@ $JIGSAW_BIN/jar \
 echo " > compiling and packaging Advent"
 mkdir classes/org.codefx.demo.advent
 $JIGSAW_BIN/javac \
-	-mp mods \
+	-p mods \
 	-d classes/org.codefx.demo.advent \
 	src/org.codefx.demo.advent/module-info.java \
 	src/org.codefx.demo.advent/org/codefx/demo/advent/Main.java
@@ -71,4 +71,4 @@ $JIGSAW_BIN/jar \
 	-C classes/org.codefx.demo.advent/ .
 
 echo " > running Advent"
-$JIGSAW_BIN/java -mp mods:libs -m org.codefx.demo.advent
+$JIGSAW_BIN/java -p mods:libs -m org.codefx.demo.advent
