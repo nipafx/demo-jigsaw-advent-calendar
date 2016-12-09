@@ -133,7 +133,7 @@ The factories implement `SurpriseFactory` so this module must obviously depend o
 And since they return instances of `Surprise` from published methods the same line of though as above leads to a `requires public` clause.
 
 The factories can be found in the package `org.codefx.demo.advent.factories` so that must be exported.
-Note that the public class `AbstractSurpriseFactory`, which is found in another package, is **not** accessible outside this module.
+Note that the package visible class `AbstractSurpriseFactory` is **not** accessible outside this module.
 As it is currently implemented Jigsaw will also not allow reflection to access it.
 The only way around this are command line flags.
 
