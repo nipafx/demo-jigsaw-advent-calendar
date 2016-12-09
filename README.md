@@ -98,7 +98,7 @@ But there is an additional twist:
 The publicly accessible method `Calendar::createWithSurprises` declares a parameter of type `List<SurpriseFactory>`.
 So all modules using this API must also read _surprise_.
 Otherwise Jigsaw would prevent them from accessing these types, which would lead to compile and runtime errors.
-Marking the `requires` clause as `public` fixes this.
+Marking the `requires` clause as `transitive` fixes this.
 With it any module that depends on _calendar_ can also access _surprise_ (called _implied readability_).
 
 This module's API consists of the class `Calendar`.
@@ -111,7 +111,7 @@ The final module-info looks as follows:
 ```java
 module org.codefx.demo.advent.calendar {
 	// required modules
-	requires public org.codefx.demo.advent.surprise;
+	requires transitive org.codefx.demo.advent.surprise;
 	// publicly accessible packages
 	exports org.codefx.demo.advent.calendar;
 }
@@ -142,7 +142,7 @@ Together:
 ```java
 module org.codefx.demo.advent.factories {
 	// required modules
-	requires public org.codefx.demo.advent.surprise;
+	requires transitive org.codefx.demo.advent.surprise;
 	// publicly accessible packages
 	exports org.codefx.demo.advent.factories;
 }
