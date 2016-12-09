@@ -44,12 +44,7 @@ demonstrates dependencies that are mandatory at compile time but are not require
 
 ## Setup
 
-This demo was developed against build 138 of the [Jigsaw early access prototype](https://jdk9.java.net/jigsaw/).
-For it to work the environment variable `JIGSAW_BIN` has to point to the `bin` directory in such a Java 9 install, e.g.:
-
-```
-export JIGSAW_HOME=/opt/java/jdk9
-export JIGSAW_BIN=/opt/java/jdk9/bin
-```
+This demo was developed against build 146 of the [Jigsaw early access prototype](https://jdk9.java.net/jigsaw/).
+For it to work the Java 9 variants of `javac`, `jar`, and `java` must be available on the command line via `javac9`, `jar9`, and `java9`, e.g. by symlinking them.
 
 The root directory contains a `compileAndRun.sh`, which - surprise - compiles and runs the example.
