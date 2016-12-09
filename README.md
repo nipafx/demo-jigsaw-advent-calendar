@@ -36,4 +36,4 @@ To run the module we provide a module path to `java` (via `-p`) that points to t
 For execution it suffices to name the module as the JVM will look for it in the module path and find out that a main class was defined.
 
 <sup>1</sup> the commands must come from the JDK 9 `bin` directory;
-`compileAndRun.sh` prefixes them with `JIGSAW_BIN` to achieve this
+`compileAndRun.sh` appends `9` to them and ony my machine the resulting commands (e.g. `javac9`) are symlinked to the Java 9 variants. 
