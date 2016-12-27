@@ -59,7 +59,7 @@ LICENSE
 README
 ```
 
-This is the same directory structure as used by the [official quick start guide](http://openjdk.java.net/projects/jigsaw/quick-start). The depcition is not complete, though, and does not contain the folders below `org`, which are the individual packages and eventually the source files.
+This is the same directory structure as used by the [official quick start guide](http://openjdk.java.net/projects/jigsaw/quick-start). The depiction is not complete, though, and does not contain the folders below `org`, which are the individual packages and eventually the source files.
 
 ### _surprise_
 
