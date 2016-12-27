@@ -54,7 +54,7 @@ Nothing changed [from before](https://github.com/CodeFX-org/demo-jigsaw-advent-c
 
 ### _chocolate_
 
-As [before with _factories_](https://github.com/CodeFX-org/demo-jigsaw-advent-calendar/tree/02-splitting-into-modules#factories) this module must `require public` the _surprise_ module.
+As [before with _factories_](https://github.com/CodeFX-org/demo-jigsaw-advent-calendar/tree/02-splitting-into-modules#factories) this module must `require transitive` the _surprise_ module.
 
 More interesting are its exports.
 It provides an implementation of `SurpriseFactory`, namely `ChocolateFactory`, which is specified as follows:
@@ -72,7 +72,7 @@ We end up with:
 ```java
 module org.codefx.demo.advent.factory.chocolate {
 	// list the required modules
-	requires public org.codefx.demo.advent.surprise;
+	requires transitive org.codefx.demo.advent.surprise;
 	// specify which class provides which service
 	provides org.codefx.demo.advent.surprise.SurpriseFactory
 		with org.codefx.demo.advent.factory.chocolate.ChocolateFactory;
