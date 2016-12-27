@@ -130,7 +130,7 @@ jar -c --file=mods/org.codefx.demo.advent.calendar.jar ${compiled class files}
 ### _factories_
 
 The factories implement `SurpriseFactory` so this module must obviously depend on theirs.
-And since they return instances of `Surprise` from published methods the same line of though as above leads to a `requires public` clause.
+And since they return instances of `Surprise` from published methods the same line of though as above leads to a `requires transitive` clause.
 
 The factories can be found in the package `org.codefx.demo.advent.factories` so that must be exported.
 Note that the package visible class `AbstractSurpriseFactory` is **not** accessible outside this module.
