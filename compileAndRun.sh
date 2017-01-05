@@ -41,14 +41,17 @@ jar9 \
 echo " > compiling and packaging Advent"
 mkdir classes/org.codefx.demo.advent
 javac9 \
-	-p mods \
+	-cp "mods/*" \
 	-d classes/org.codefx.demo.advent \
-	$(find src/org.codefx.demo.advent -name '*.java')
+	src/org.codefx.demo.advent/org/codefx/demo/advent/Main.java
+# replacing "-cp" with "--class-path" does not work o_O :
+# javac9 --class-path "mods/*" -d classes/org.codefx.demo.advent src/org.codefx.demo.advent/org/codefx/demo/advent/Main.java
+
 jar9 \
 	-c \
 	--file mods/org.codefx.demo.advent.jar \
 	--main-class org.codefx.demo.advent.Main \
 	-C classes/org.codefx.demo.advent/ .
 
-echo " > running Advent"
-java9 -p mods -m org.codefx.demo.advent
+#echo " > running Advent"
+#java9 -p mods -m org.codefx.demo.advent
