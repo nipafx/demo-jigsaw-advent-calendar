@@ -54,7 +54,7 @@ Nothing changed [from before](https://github.com/CodeFX-org/demo-jigsaw-advent-c
 
 ### _chocolate_
 
-As [before with _factories_](https://github.com/CodeFX-org/demo-jigsaw-advent-calendar/tree/02-splitting-into-modules#factories) this module must `require transitive` the _surprise_ module.
+As [before with _factories_](https://github.com/CodeFX-org/demo-jigsaw-advent-calendar/tree/02-splitting-into-modules#factories) this module must require the _surprise_ module.
 
 More interesting are its exports.
 It provides an implementation of `SurpriseFactory`, namely `ChocolateFactory`, which is specified as follows:
