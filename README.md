@@ -28,13 +28,17 @@ README
 
 This is in preparation for the upcoming move to Jigsaw and uses the same directory structure as the [official quick start guide](http://openjdk.java.net/projects/jigsaw/quick-start).
 
-Compiling and running is straight forward (see `compileAndRun.sh` for details):
+Compiling and running is straight forward (see `compileAndRun.sh` for details; the script uses Java 9's new long form options):
 
 ```bash
 # compile:
-javac -d classes/org.codefx.demo.advent ${list of source files}
+javac -d classes/org.codefx.demo.advent
+    ${list of source files}
 # package:
-jar -cfm jars/org.codefx.demo.advent.jar ${manifest file and compiled class files}
+jar --create
+    --file jars/org.codefx.demo.advent.jar
+    --manifest ${manifest file}
+    ${compiled class files}
 # run:
 java -jar jars/org.codefx.demo.advent.jar
 ```
