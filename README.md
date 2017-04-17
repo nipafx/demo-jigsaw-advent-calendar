@@ -84,9 +84,12 @@ It is in fact even easier because _surprise_ contains no main class:
 
 ```bash
 # compile
-javac -d classes/org.codefx.demo.advent.surprise ${list of source files}
+javac -d classes/org.codefx.demo.advent.surprise
+    ${list of source files}
 # package
-jar -c --file=mods/org.codefx.demo.advent.surprise.jar ${compiled class files}
+jar --create
+    --file mods/org.codefx.demo.advent.surprise.jar
+    ${compiled class files}
 ```
 
 ### _calendar_
@@ -122,9 +125,13 @@ For that it suffices to point the compiler to the directory `mods` as it contain
 
 ```bash
 # compile
-javac -p mods -d classes/org.codefx.demo.advent.calendar ${list of source files}
+javac --module-path mods
+    -d classes/org.codefx.demo.advent.calendar
+    ${list of source files}
 # package
-jar -c --file=mods/org.codefx.demo.advent.calendar.jar ${compiled class files}
+jar --create
+    --file mods/org.codefx.demo.advent.calendar.jar
+    ${compiled class files}
 ```
 
 ### _factories_
@@ -167,10 +174,26 @@ module org.codefx.demo.advent {
 Compiling and packaging is like with last section's single module except that the compiler needs to know where to look for required modules:
 
 ```bash
-javac -p mods -d classes/org.codefx.demo.advent ${list of source files}
-jar -c \
-	--file=mods/org.codefx.demo.advent.jar \
-	--main-class=org.codefx.demo.advent.Main \
+javac --module-path mods
+    -d classes/org.codefx.demo.advent
+    ${list of source files}
+jar --create \
+	--file mods/org.codefx.demo.advent.jar \
+	--main-class org.codefx.demo.advent.Main \
 	${compiled class files}
-java -p mods -m org.codefx.demo.advent
+java --module-path mods -m org.codefx.demo.advent
 ```
+
+
+### Multi-Module Compilation
+
+Instead of compiling the modules one by one it is possible to compile all at once by telling the compiler where to find the sources for specific modules with `--module-source-path`.
+In our case all module's source folders are found below `src`, so the command looks as follows:
+
+```bash
+javac9 -d classes \
+	--module-source-path "src" \
+	--module org.codefx.demo.advent
+```
+
+Note that it is not necessary to list source files.
