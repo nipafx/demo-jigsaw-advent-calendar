@@ -1,5 +1,6 @@
 package org.codefx.demo.advent.factory.chocolate;
 
+import org.codefx.demo.advent.factory.AbstractSurpriseFactory;
 import org.codefx.demo.advent.surprise.Surprise;
 
 import java.util.Arrays;

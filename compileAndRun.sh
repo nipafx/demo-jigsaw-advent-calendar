@@ -21,6 +21,9 @@ jar9 --create \
 	--file mods/org.codefx.demo.advent.calendar.jar \
 	-C classes/org.codefx.demo.advent.calendar/ .
 jar9 --create \
+	--file mods/org.codefx.demo.advent.factory.jar \
+	-C classes/org.codefx.demo.advent.factory/ .
+jar9 --create \
 	--file mods/org.codefx.demo.advent.factory.chocolate.jar \
 	-C classes/org.codefx.demo.advent.factory.chocolate/ .
 jar9  --create \

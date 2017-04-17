@@ -1,4 +1,4 @@
-package org.codefx.demo.advent.factory.chocolate;
+package org.codefx.demo.advent.factory;
 
 import org.codefx.demo.advent.surprise.Surprise;
 import org.codefx.demo.advent.surprise.SurpriseFactory;
@@ -6,11 +6,11 @@ import org.codefx.demo.advent.surprise.SurpriseFactory;
 import java.util.List;
 import java.util.Random;
 
-abstract class AbstractSurpriseFactory implements SurpriseFactory {
+public abstract class AbstractSurpriseFactory implements SurpriseFactory {
 
 	/*
-	 * The class is package-visible, so even though the package is exported,
-	 * it will not be accessible outside this module.
+	 * The class is public but the package is only exported to selected modules,
+	 * so others will not be able to access it
 	 */
 
 	private static final Random RANDOM = new Random();
