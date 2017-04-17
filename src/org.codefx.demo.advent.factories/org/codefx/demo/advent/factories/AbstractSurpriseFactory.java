@@ -9,7 +9,8 @@ import java.util.Random;
 abstract class AbstractSurpriseFactory implements SurpriseFactory {
 
 	/*
-	 * The class is public but the package is not being exported so it will not be accessible outside this module.
+	 * The class is package private so even though the package is not being exported,
+	 * it will not be accessible outside this module.
 	 */
 
 	private static final Random RANDOM = new Random();
