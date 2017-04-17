@@ -11,13 +11,11 @@ mkdir classes/org.codefx.demo.advent
 javac9 \
 	-d classes/org.codefx.demo.advent \
 	$(find src/org.codefx.demo.advent -name '*.java')
-jar9 \
-	-c \
+jar9 --create \
 	--file mods/org.codefx.demo.advent.jar \
-	--main-class=org.codefx.demo.advent.Main \
+	--main-class org.codefx.demo.advent.Main \
 	-C classes/org.codefx.demo.advent/ .
 
 echo " > running Advent"
-java9 \
-	-p mods \
-	-m org.codefx.demo.advent
+java9 --module-path mods \
+	--module org.codefx.demo.advent
