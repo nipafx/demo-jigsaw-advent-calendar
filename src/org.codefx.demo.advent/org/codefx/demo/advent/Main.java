@@ -21,26 +21,24 @@ public class Main {
 
 	private static List<SurpriseFactory> createSurpriseFactories() {
 		return Stream.of(
-				createChocolateFactoryIfAccessible(),
-				createQuoteFactoryIfAccessible())
+				createChocolateFactoryIfPresent(),
+				createQuoteFactoryIfPresent())
 				.flatMap(Optional::stream)
 				.collect(toList());
 	}
 
-	private static Optional<SurpriseFactory> createChocolateFactoryIfAccessible() {
-		try {
+	private static Optional<SurpriseFactory> createChocolateFactoryIfPresent() {
+		if (ModuleUtils.isModulePresent("org.codefx.demo.advent.factory.chocolate"))
 			return Optional.of(new ChocolateFactory());
-		} catch (NoClassDefFoundError er) {
+		else
 			return Optional.empty();
-		}
 	}
 
-	private static Optional<SurpriseFactory> createQuoteFactoryIfAccessible() {
-		try {
+	private static Optional<SurpriseFactory> createQuoteFactoryIfPresent() {
+		if (ModuleUtils.isModulePresent("org.codefx.demo.advent.factory.quote"))
 			return Optional.of(new QuoteFactory());
-		} catch (NoClassDefFoundError er) {
+		else
 			return Optional.empty();
-		}
 	}
 
 }
