@@ -20,6 +20,8 @@ public class Calendar {
 	}
 
 	public static Calendar createWithSurprises(List<SurpriseFactory> surpriseFactories) {
+		if (surpriseFactories.isEmpty())
+			throw new IllegalArgumentException("Advent calendar can not work without at least one surprise factory.");
 		return new Calendar(createSheetsWithRandomSurprises(surpriseFactories));
 	}
 
