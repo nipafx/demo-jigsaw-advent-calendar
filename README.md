@@ -5,6 +5,7 @@ It showcases a couple of features of [Project Jigsaw](http://blog.codefx.org/tag
 
 The code is released into the public domain via [CC0](https://creativecommons.org/publicdomain/zero/1.0/) so it can be used without any limitations.
 
+ :sleeping: **This demo project is no longer maintained. It is superseeded by a simpler ["Hello World" example](https://github.com/CodeFX-org/demo-jpms-hello-world) and the more well-rounded [_ServiceMonitor_ application](https://github.com/CodeFX-org/demo-jpms-monitor).** :sleeping:
 
 
 ## The Advent Calendar
@@ -44,7 +45,7 @@ demonstrates dependencies that are mandatory at compile time but are not require
 
 ## Setup
 
-This demo was developed against build 146 of the [Jigsaw early access prototype](https://jdk9.java.net/jigsaw/).
+This demo (obviously) requires [Java 9](http://www.oracle.com/technetwork/java/javase/downloads/jdk9-downloads-3848520.html).
 For it to work the Java 9 variants of `javac`, `jar`, and `java` must be available on the command line via `javac9`, `jar9`, and `java9`, e.g. by symlinking them.
 
 The root directory contains a `compileAndRun.sh`, which - surprise - compiles and runs the example.
